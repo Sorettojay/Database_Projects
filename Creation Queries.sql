@@ -1,4 +1,5 @@
-  /*Creating the Database*/
+
+ /*Creating the Database*/
  CREATE DATABASE Hospital_Database;
 
 /*Create stored procedues for database and table creation*/
@@ -37,8 +38,10 @@ cost REAL
 
 CREATE TABLE trained_in
 (
+physician INT,
+treatment INT,
 FOREIGN KEY (physician) REFERENCES physician(employee_id),
-FOREIGN KEY (treatment) REFERENCES _procedure_(_code),
+FOREIGN KEY (treatment) REFERENCES _procedure_(code),
 certification_date DATE,
 certification_expires DATE
 );
@@ -50,6 +53,7 @@ name CHAR(30),
 address VARCHAR(100),
 phone VARCHAR(12),
 insurance_id INT UNIQUE,
+pcp INT,
 FOREIGN KEY (pcp) REFERENCES physician(employee_id)
 );
 
@@ -65,9 +69,12 @@ ssn VARCHAR(11)
 CREATE TABLE appointment
 (
 appointment_id INT NOT NULL UNIQUE PRIMARY KEY,
-FOREIGN KEY (patient) REFERENCES patient.ssn,
-FOREIGN KEY (prepnurse) REFERENCES nurse.employee_id,
-FOREIGN KEY (physician) REFERENCES physician.employee_id,
+patient VARCHAR(11),
+prep_nurse INT,
+physician INT,
+FOREIGN KEY (patient) REFERENCES patient(ssn),
+FOREIGN KEY (prep_nurse) REFERENCES nurse(employee_id),
+FOREIGN KEY (physician) REFERENCES physician(employee_id),
 start_dt_time DATETIME,
 end_dt_time DATETIME,
 examination_room TEXT
@@ -83,11 +90,15 @@ description TEXT
 
 CREATE TABLE prescribes
 (
+physician INT,
+patient VARCHAR(11),
+medication INT,
+appointment INT,
 FOREIGN KEY (physician) REFERENCES physician.employee_id,
 FOREIGN KEY (patient) REFERENCES patient.ssn,
 FOREIGN KEY (medication) REFERENCES medication.code,
-date DATETIME,
 FOREIGN KEY (appointment) REFERENCES appointment.appointment_id,
+date DATETIME,
 dose TEXT
 );
 
@@ -108,6 +119,7 @@ unavailable BIT(1)
 
 CREATE TABLE on_call
 (
+nurse INT NOT NULL UNIQUE PRIMARY KEY,
 FOREIGN KEY (nurse) REFERENCES nurse.employee_id,
 block_floor INT NOT NULL UNIQUE,
 block_code INT NOT NULL UNIQUE,
