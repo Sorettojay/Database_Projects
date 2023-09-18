@@ -1,4 +1,4 @@
-
+ 
  /*Creating the Database*/
  CREATE DATABASE Hospital_Database;
 
@@ -94,10 +94,10 @@ physician INT,
 patient VARCHAR(11),
 medication INT,
 appointment INT,
-FOREIGN KEY (physician) REFERENCES physician.employee_id,
-FOREIGN KEY (patient) REFERENCES patient.ssn,
-FOREIGN KEY (medication) REFERENCES medication.code,
-FOREIGN KEY (appointment) REFERENCES appointment.appointment_id,
+FOREIGN KEY (physician) REFERENCES physician(employee_id),
+FOREIGN KEY (patient) REFERENCES patient(ssn),
+FOREIGN KEY (medication) REFERENCES medication(code),
+FOREIGN KEY (appointment) REFERENCES appointment(appointment_id),
 date DATETIME,
 dose TEXT
 );
@@ -120,7 +120,7 @@ unavailable BIT(1)
 CREATE TABLE on_call
 (
 nurse INT NOT NULL UNIQUE PRIMARY KEY,
-FOREIGN KEY (nurse) REFERENCES nurse.employee_id,
+FOREIGN KEY (nurse) REFERENCES nurse(employee_id),
 block_floor INT NOT NULL UNIQUE,
 block_code INT NOT NULL UNIQUE,
 on_call_start DATETIME,
@@ -130,18 +130,27 @@ on_call_end DATETIME
 CREATE TABLE stay
 (
 stayid INT NOT NULL UNIQUE,
-FOREIGN KEY (patient) REFERENCES patient.ssn,
-FOREIGN KEY (room) REFERENCES room.room_number,
+patient VARCHAR(11),
+room INT,
+FOREIGN KEY (patient) REFERENCES patient(ssn),
+FOREIGN KEY (room) REFERENCES room(room_number),
 start_time TIME,
 end_time TIME
 );
 
 CREATE TABLE undergoes
 (
-FOREIGN KEY (patient) REFERENCES patient.ssn,
-FOREIGN KEY (_procedure_) REFERENCES _procedure_.code,
-FOREIGN KEY (stay) REFERENCES stay.stayid,
+ssn VARCHAR(11),
+patient INT,
+_procedure_ INT,
+stay INT,
+physician INT,
+assisting_nurse INT,
+FOREIGN KEY (ssn) REFERENCES patient(ssn),
+FOREIGN KEY (_procedure_) REFERENCES _procedure_(code),
+FOREIGN KEY (stay) REFERENCES stay(stayid),
 date DATE,
-FOREIGN KEY (patient) REFERENCES physician.employeeid,
-FOREIGN KEY (assisting_nurse) REFERENCES nurse.employee_id
+FOREIGN KEY (patient) REFERENCES physician(employee_id),
+FOREIGN KEY (assisting_nurse) REFERENCES nurse(employee_id)
 );
+
