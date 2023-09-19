@@ -1,6 +1,10 @@
 # Hospital_DBMS
 A hospital database management system created with SQL. Based off the following project / schema: 
 
+Creation Queries.sql initializes the creation of the database and all of its tables using stored procedures.
+
+Sample Data Insertion.sql inserts data into the tables.
+
 [Project Inspiration](https://www.w3resource.com/sql-exercises/hospital-database-exercise/index.php)
 
 #---------------------------------------------------------------------------------------------------#
